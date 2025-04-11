@@ -1,0 +1,270 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package control;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
+import java.util.ArrayList;
+
+import vista.VistaMenuSTY;
+import control.*;
+import javax.swing.JOptionPane;
+import modelo.*;
+import vista.VistaPropietario;
+
+/*
+ *
+ * @author UNIVALLE
+ *
+ */
+public class ControlMenuSTYGui implements ActionListener {
+    
+    private VistaMenuSTY vistaMenSTY;
+    private VistaPropietario vistaPropietario;
+    
+    //Listas de objetos de las clases modelo
+    private List<Vehiculo> listaVehiculos= new ArrayList<>();
+    private List<Propietario> listaPropietarios= new ArrayList<>();
+    private List<TarjetaPropiedad> listaTarjetasPropiedad= new ArrayList<>();
+    
+    
+    public ControlMenuSTYGui(){
+                
+        this.vistaMenSTY= new VistaMenuSTY();
+        
+        this.vistaMenSTY.setVisible(true);
+        
+        //Vehiculos
+        this.vistaMenSTY.jbtn_vehiculo.addActionListener(this);
+        this.vistaMenSTY.jbtn_listarVehiculos.addActionListener(this); 
+        this.vistaMenSTY.jbtn_consultarVehiculo.addActionListener(this);
+        this.vistaMenSTY.jbtn_modificarVehiculo.addActionListener(this);
+        this.vistaMenSTY.jbtn_eliminarVehiculo.addActionListener(this);
+        
+        //Propietarios
+        this.vistaMenSTY.jbtn_propietario.addActionListener(this);
+        this.vistaMenSTY.jbtn_listarPropietarios.addActionListener(this);
+        
+        //Tarjetas
+        this.vistaMenSTY.jbtn_tarjetaPropiedad.addActionListener(this);
+        this.vistaMenSTY.jbtn_listarTarjetas.addActionListener(this);
+    }
+    
+    //Listar Propietarios
+    public void listarPropietarios(){
+        String propietarios="";
+        if(this.listaPropietarios.size()>0){                
+            for(int i=0; i<this.listaPropietarios.size(); i++){
+                propietarios += "DNI: "+this.listaPropietarios.get(i).getDni()+"\n";
+                propietarios += "Nobmres: "+this.listaPropietarios.get(i).getNombres()+"\n";
+                propietarios += "Apellidos: "+this.listaPropietarios.get(i).getApellidos()+"\n";
+                propietarios += "Dirección: "+this.listaPropietarios.get(i).getDireccion()+"\n";
+                propietarios += "-----------------------------\n";
+            }
+            JOptionPane.showMessageDialog(vistaMenSTY, propietarios);
+        }else{            
+            System.out.println("No se han ingresado Propietarios");
+        }
+    }
+    
+    //Listar Tarjetas de Propiedad
+    public void listarTargetaPropietarios(){
+        if(this.listaTarjetasPropiedad.size()>0){                
+            for(int i=0; i<this.listaTarjetasPropiedad.size(); i++){
+                System.out.println(this.listaTarjetasPropiedad.get(i).getVehiculo());
+                System.out.println(this.listaTarjetasPropiedad.get(i).getPropietario());
+                System.out.println(this.listaTarjetasPropiedad.get(i).getCodigo());
+                System.out.println(this.listaTarjetasPropiedad.get(i).getFechaExp()+"");
+                System.out.println();
+            }
+        }else{            
+            System.out.println("No se han ingresado Propietarios");
+        }
+    }
+    
+    //Modificar vehiculos
+    public void modificarVehiculoPorPlaca() {
+        String placaMod = JOptionPane.showInputDialog("Ingrese la placa del vehículo a modificar (formato ABC123):");
+
+        // Validar formato
+        if (placaMod == null || !placaMod.matches("^[A-Z]{3}[0-9]{3}$")) {
+            JOptionPane.showMessageDialog(null, "Formato de placa no válido.");
+            return;
+        }
+
+        Vehiculo v = buscarVehiculoPorPlaca(placaMod);
+
+        if (v == null) {
+            JOptionPane.showMessageDialog(null, "Vehículo no encontrado.");
+            return;
+        }
+
+        // Pedir nuevos datos
+        String nuevaMarca = JOptionPane.showInputDialog("Ingrese la nueva marca:", v.getMarca());
+        if (nuevaMarca == null || nuevaMarca.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "La marca no puede estar vacía.");
+            return;
+        }
+
+        String nuevoAnhoStr = JOptionPane.showInputDialog("Ingrese el nuevo año de fabricación:", v.getAnhoFab());
+        int nuevoAnho;
+        try {
+            nuevoAnho = Integer.parseInt(nuevoAnhoStr);
+            int anhoMin = 1886;
+            int anhoMax = 2026;
+            if (nuevoAnho < anhoMin || nuevoAnho > anhoMax) {
+                JOptionPane.showMessageDialog(null, "El año debe estar entre 1886 y 2026.");
+                return;
+            }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "Debe ingresar un número válido para el año NumberFormatException.");
+            return;
+        }
+
+        // Si todo está bien, modificar el objeto
+        v.setMarca(nuevaMarca);
+        v.setAnhoFab(nuevoAnho);
+
+        JOptionPane.showMessageDialog(null, "Vehículo actualizado correctamente.");
+    }
+    
+    //Consultar un vehiculo
+    public void consultarVehiculos(){
+        try {
+            String placaConsulta = JOptionPane.showInputDialog("Ingrese la placa del vehículo:");
+
+            // Validar que el usuario no canceló el input (porque eso también da null)
+            if (placaConsulta == null || placaConsulta.isEmpty()) {
+                throw new NullPointerException("No se ingresó una placa NullPointerException.");
+            }
+
+            Vehiculo vehiculoEncontrado = buscarVehiculoPorPlaca(placaConsulta);
+
+            // Si no lo encuentra, lanzamos NullPointerException de forma explícita
+            if (vehiculoEncontrado == null) {
+                throw new NullPointerException("Vehiculo no encontrado. NullPointerException");
+            }
+
+            // Si se encontró, mostramos los datos
+            JOptionPane.showMessageDialog(null,
+                "Vehículo encontrado:\nMarca: " + vehiculoEncontrado.getMarca() +
+                "\nAño: " + vehiculoEncontrado.getAnhoFab());
+
+        } catch (NullPointerException exc) {
+            JOptionPane.showMessageDialog(null, exc.getMessage());
+        }
+    }
+
+
+    //Buscar vehiculos 
+    private Vehiculo buscarVehiculoPorPlaca(String placaBuscada) {
+        for (Vehiculo v : listaVehiculos) {
+            if (v.getPlaca().equalsIgnoreCase(placaBuscada)) {
+                return v;
+            }
+        }
+        return null; // No se encontró el vehículo
+    }
+    
+    //Eliminar Vehiculos
+    public void eliminarVehiculoPorPlaca() {
+        String placaEliminar = JOptionPane.showInputDialog("Ingrese la placa del vehículo a eliminar (formato ABC123):");
+
+        if (placaEliminar == null || !placaEliminar.matches("^[A-Z]{3}[0-9]{3}$")) {
+            JOptionPane.showMessageDialog(null, "Formato de placa no válido.");
+            return;
+        }
+
+        Vehiculo v = buscarVehiculoPorPlaca(placaEliminar);
+
+        if (v == null) {
+            JOptionPane.showMessageDialog(null, "Vehículo no encontrado.");
+            return;
+        }
+
+        int confirm = JOptionPane.showConfirmDialog(null, 
+            "¿Está seguro que desea eliminar el vehículo con placa " + v.getPlaca() + "?", 
+            "Confirmar eliminación", 
+            JOptionPane.YES_NO_OPTION);
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            listaVehiculos.remove(v);
+            JOptionPane.showMessageDialog(null, "Vehículo eliminado correctamente.");
+        } else {
+            JOptionPane.showMessageDialog(null, "Eliminación cancelada.");
+        }
+    }
+
+    
+    //Listar Vehiculos
+    public void listarVehiculos(){  
+        String vehiculos="";
+        if(this.listaVehiculos.size()>0){                
+            for(int i=0; i<this.listaVehiculos.size(); i++){
+                vehiculos += "Placa: "+this.listaVehiculos.get(i).getPlaca()+"\n";
+                vehiculos += "Marca: "+this.listaVehiculos.get(i).getMarca()+"\n";
+                vehiculos += "AñoFab: "+this.listaVehiculos.get(i).getAnhoFab()+"\n";
+                vehiculos += "-----------------------------\n";
+            }
+            JOptionPane.showMessageDialog(vistaMenSTY, vehiculos);
+        }else{            
+            System.out.println("No se han ingresado vehículos");
+        }
+    }
+
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        
+        //Boton Ingresar Vehiculo
+        if(e.getSource() == this.vistaMenSTY.jbtn_vehiculo){
+            ControlVehiculoGui unControlVehiGui= new ControlVehiculoGui(this.listaVehiculos);            
+        }
+        
+        //Boton Listar Vehiculos
+        if(e.getSource() == this.vistaMenSTY.jbtn_listarVehiculos){
+            listarVehiculos();
+        }
+        
+        //Boton consultar un vehiculo
+        if (e.getSource() == this.vistaMenSTY.jbtn_consultarVehiculo) {
+            consultarVehiculos();
+        }
+        
+        //Modificar Vehiculos
+        if (e.getSource()== this.vistaMenSTY.jbtn_modificarVehiculo) {
+            modificarVehiculoPorPlaca();
+        }
+        
+        //Elininar Vehiculos
+        if (e.getSource() == this.vistaMenSTY.jbtn_eliminarVehiculo) {
+            eliminarVehiculoPorPlaca();
+        }
+
+        //Boton Ingresar Propietario
+        if(e.getSource() == this.vistaMenSTY.jbtn_propietario){
+            ControlPropietarioGui unControlPropietarioGui= new ControlPropietarioGui(this.listaPropietarios);
+        }
+        
+        //Boton Listar Propietarios
+        if(e.getSource() == this.vistaMenSTY.jbtn_listarPropietarios){
+            listarPropietarios();
+        }
+  
+        //Boton Ingresar Tarjeta Propiedad
+        if(e.getSource() == this.vistaMenSTY.jbtn_tarjetaPropiedad){
+            ControlTarjetaPropiedadGui unControlPropietarioGui= new ControlTarjetaPropiedadGui(this.listaVehiculos, this.listaPropietarios, this.listaTarjetasPropiedad);
+        }
+        
+        //Boton Listar Tarjetas de Propiedad
+        if(e.getSource() == this.vistaMenSTY.jbtn_listarTarjetas){
+            listarTargetaPropietarios();
+        }
+      
+
+    }
+    
+}
