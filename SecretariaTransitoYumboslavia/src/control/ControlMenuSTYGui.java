@@ -54,40 +54,11 @@ public class ControlMenuSTYGui implements ActionListener {
         //Tarjetas
         this.vistaMenSTY.jbtn_tarjetaPropiedad.addActionListener(this);
         this.vistaMenSTY.jbtn_listarTarjetas.addActionListener(this);
+        this.vistaMenSTY.jbtn_modificarTarjeta.addActionListener(this);
+        this.vistaMenSTY.jbtn_consultarTarjeta.addActionListener(this);
+        this.vistaMenSTY.jbtn_elimnarTrajeta.addActionListener(this);
     }
-    
-    //Listar Propietarios
-    public void listarPropietarios(){
-        String propietarios="";
-        if(this.listaPropietarios.size()>0){                
-            for(int i=0; i<this.listaPropietarios.size(); i++){
-                propietarios += "DNI: "+this.listaPropietarios.get(i).getDni()+"\n";
-                propietarios += "Nobmres: "+this.listaPropietarios.get(i).getNombres()+"\n";
-                propietarios += "Apellidos: "+this.listaPropietarios.get(i).getApellidos()+"\n";
-                propietarios += "Dirección: "+this.listaPropietarios.get(i).getDireccion()+"\n";
-                propietarios += "-----------------------------\n";
-            }
-            JOptionPane.showMessageDialog(vistaMenSTY, propietarios);
-        }else{            
-            System.out.println("No se han ingresado Propietarios");
-        }
-    }
-    
-    //Listar Tarjetas de Propiedad
-    public void listarTargetaPropietarios(){
-        if(this.listaTarjetasPropiedad.size()>0){                
-            for(int i=0; i<this.listaTarjetasPropiedad.size(); i++){
-                System.out.println(this.listaTarjetasPropiedad.get(i).getVehiculo());
-                System.out.println(this.listaTarjetasPropiedad.get(i).getPropietario());
-                System.out.println(this.listaTarjetasPropiedad.get(i).getCodigo());
-                System.out.println(this.listaTarjetasPropiedad.get(i).getFechaExp()+"");
-                System.out.println();
-            }
-        }else{            
-            System.out.println("No se han ingresado Propietarios");
-        }
-    }
-    
+    //Funciones de Vehiculos
     //Modificar vehiculos
     public void modificarVehiculoPorPlaca() {
         String placaMod = JOptionPane.showInputDialog("Ingrese la placa del vehículo a modificar (formato ABC123):");
@@ -218,7 +189,24 @@ public class ControlMenuSTYGui implements ActionListener {
         }
     }
     
-    //funciones de Propietarios
+    //funciones de Propietarios   
+    //Listar Propietarios
+    public void listarPropietarios(){
+        String propietarios="";
+        if(this.listaPropietarios.size()>0){                
+            for(int i=0; i<this.listaPropietarios.size(); i++){
+                propietarios += "DNI: "+this.listaPropietarios.get(i).getDni()+"\n";
+                propietarios += "Nobmres: "+this.listaPropietarios.get(i).getNombres()+"\n";
+                propietarios += "Apellidos: "+this.listaPropietarios.get(i).getApellidos()+"\n";
+                propietarios += "Dirección: "+this.listaPropietarios.get(i).getDireccion()+"\n";
+                propietarios += "-----------------------------\n";
+            }
+            JOptionPane.showMessageDialog(vistaMenSTY, propietarios);
+        }else{            
+            System.out.println("No se han ingresado Propietarios");
+        }
+    }
+    
     //Eliminar propietarios
     public void eliminarPropietarioPorDni() {
         try {
@@ -348,6 +336,144 @@ public class ControlMenuSTYGui implements ActionListener {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
     }
+    
+    //Funciones de tarjetas    
+    //Listar Tarjetas de Propiedad
+    public void listarTargetaPropietarios(){
+        
+        String tarjetasPro="";
+        if(this.listaTarjetasPropiedad.size()>0){                
+            for(int i=0; i<this.listaPropietarios.size(); i++){
+                tarjetasPro += "Vehiculo: "+this.listaTarjetasPropiedad.get(i).getVehiculo()+"\n";
+                tarjetasPro += "Propietario: "+this.listaTarjetasPropiedad.get(i).getPropietario()+"\n";
+                tarjetasPro += "Codigo: "+this.listaTarjetasPropiedad.get(i).getCodigo()+"\n";
+                tarjetasPro += "Fecha de exp: "+this.listaTarjetasPropiedad.get(i).getFechaExp()+"\n";
+                tarjetasPro += "-----------------------------\n";
+            }
+            JOptionPane.showMessageDialog(vistaMenSTY, tarjetasPro);
+        }else{            
+            System.out.println("No se han registrado tarjetas de propiedad");
+        }
+
+    }
+    
+        
+    //Modificar tarjetas
+    public void modificarTarjetaPorCodigo() {
+        try {
+            String codigoStr = JOptionPane.showInputDialog("Ingrese el código de la tarjeta de propiedad a modificar:");
+
+            if (codigoStr == null || codigoStr.trim().isEmpty()) {
+                throw new IllegalArgumentException("Debe ingresar un código.");
+            }
+
+            int codigo = Integer.parseInt(codigoStr.trim());
+            TarjetaPropiedad tarjeta = buscarTarjetaPorCodigo(codigo);
+
+            if (tarjeta == null) {
+                throw new NullPointerException("Tarjeta no encontrada. (NullPointerException)");
+            }
+
+            String nuevaFecha = JOptionPane.showInputDialog("Ingrese nueva fecha (dd/mm/aaaa):", tarjeta.getFechaExp());
+
+            if (nuevaFecha == null || nuevaFecha.trim().isEmpty()) {
+                throw new IllegalArgumentException("La fecha no puede estar vacía.");
+            }
+
+            // Validación opcional: patrón simple dd/mm/aaaa
+            if (!nuevaFecha.matches("^\\d{2}/\\d{2}/\\d{4}$")) {
+                throw new IllegalArgumentException("Formato de fecha inválido. Use dd/mm/aaaa.");
+            }
+
+            tarjeta.setFechaExp(nuevaFecha);
+
+            JOptionPane.showMessageDialog(null, "Tarjeta modificada correctamente.");
+
+        } catch (IllegalArgumentException | NullPointerException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+    }
+    
+    //Consultar tarjeta por codigo
+    public void consultarTarjetaPorCodigo() {
+        try {
+            String codigoStr = JOptionPane.showInputDialog("Ingrese el código de la tarjeta de propiedad:");
+
+            if (codigoStr == null || codigoStr.trim().isEmpty()) {
+                throw new IllegalArgumentException("Debe ingresar un código.");
+            }
+
+            int codigo = Integer.parseInt(codigoStr.trim());
+
+            TarjetaPropiedad tarjeta = buscarTarjetaPorCodigo(codigo);
+
+            if (tarjeta == null) {
+                throw new NullPointerException("Tarjeta no encontrada. (NullPointerException)");
+            }
+
+            JOptionPane.showMessageDialog(null,
+                "Tarjeta encontrada:\n" +
+                "Código: " + tarjeta.getCodigo() + "\n" +
+                "Fecha de expedición: " + tarjeta.getFechaExp() + "\n" +
+                "Vehículo: " + tarjeta.getVehiculo().getPlaca() + " - " + tarjeta.getVehiculo().getMarca() + "\n" +
+                "Propietario: " + tarjeta.getPropietario().getNombres() + " " + tarjeta.getPropietario().getApellidos()
+            );
+
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "El código debe ser un número entero. (NumberFormatException)");
+        } catch (IllegalArgumentException | NullPointerException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+    }
+
+    
+    //Buscar tarjetas por codigo
+    private TarjetaPropiedad buscarTarjetaPorCodigo(int codigo) {
+        for (TarjetaPropiedad t : listaTarjetasPropiedad) {
+            if (t.getCodigo()== codigo) {
+                return t;
+            }
+        }
+        return null;
+    }
+
+    
+    //Eliminar tarjeta
+    public void eliminarTarjetaPorCodigo() {
+        try {
+            String codigoStr = JOptionPane.showInputDialog("Ingrese el código de la tarjeta de propiedad a eliminar:");
+
+            if (codigoStr == null || codigoStr.trim().isEmpty()) {
+                throw new IllegalArgumentException("Debe ingresar un código.");
+            }
+
+            int codigo = Integer.parseInt(codigoStr.trim());
+
+            TarjetaPropiedad tarjeta = buscarTarjetaPorCodigo(codigo);
+
+            if (tarjeta == null) {
+                throw new NullPointerException("Tarjeta no encontrada. (NullPointerException)");
+            }
+
+            int confirm = JOptionPane.showConfirmDialog(null,
+                    "¿Está seguro que desea eliminar la tarjeta con código " + codigo + "?",
+                    "Confirmar eliminación",
+                    JOptionPane.YES_NO_OPTION);
+
+            if (confirm == JOptionPane.YES_OPTION) {
+                listaTarjetasPropiedad.remove(tarjeta);
+                JOptionPane.showMessageDialog(null, "Tarjeta eliminada correctamente.");
+            } else {
+                JOptionPane.showMessageDialog(null, "Eliminación cancelada.");
+            }
+
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "Código inválido. Debe ser numérico. (NumberFormatException)");
+        } catch (IllegalArgumentException | NullPointerException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+    }
+
 
 
     @Override
@@ -373,7 +499,7 @@ public class ControlMenuSTYGui implements ActionListener {
             modificarVehiculoPorPlaca();
         }
         
-        //Elininar Vehiculos
+        //Boton Elininar Vehiculos
         if (e.getSource() == this.vistaMenSTY.jbtn_eliminarVehiculo) {
             eliminarVehiculoPorPlaca();
         }
@@ -388,12 +514,12 @@ public class ControlMenuSTYGui implements ActionListener {
             listarPropietarios();
         }
         
-        //Consultar Propietario
+        //Boton Consultar Propietario
         if (e.getSource()== this.vistaMenSTY.jbtn_consultarPropietario) {
             consultarPropietarios();
         }
         
-        //Modificar propietarios
+        //Boton Modificar propietarios
         if (e.getSource()== this.vistaMenSTY.jbtn_modificarPropietario) {
             modificarPropietarioPorDni();
         }
@@ -414,6 +540,20 @@ public class ControlMenuSTYGui implements ActionListener {
             listarTargetaPropietarios();
         }
         
+        //Boton Modificar targetas por codigo
+        if (e.getSource()== this.vistaMenSTY.jbtn_modificarTarjeta) {
+            modificarTarjetaPorCodigo();
+        }
+        
+        //Boton de consultar tarjeta
+        if (e.getSource()== this.vistaMenSTY.jbtn_consultarTarjeta) {
+            consultarTarjetaPorCodigo();
+        }
+        
+        //Boton Eliminar tarjetas de propiedad
+        if (e.getSource()== this.vistaMenSTY.jbtn_elimnarTrajeta) {
+            eliminarTarjetaPorCodigo();
+        }
 
     }
     
