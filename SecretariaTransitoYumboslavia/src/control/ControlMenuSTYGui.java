@@ -47,6 +47,9 @@ public class ControlMenuSTYGui implements ActionListener {
         //Propietarios
         this.vistaMenSTY.jbtn_propietario.addActionListener(this);
         this.vistaMenSTY.jbtn_listarPropietarios.addActionListener(this);
+        this.vistaMenSTY.jbtn_consultarPropietario.addActionListener(this);
+        this.vistaMenSTY.jbtn_modificarPropietario.addActionListener(this);
+        this.vistaMenSTY.jbtn_eliminarPropietario.addActionListener(this);
         
         //Tarjetas
         this.vistaMenSTY.jbtn_tarjetaPropiedad.addActionListener(this);
@@ -214,6 +217,137 @@ public class ControlMenuSTYGui implements ActionListener {
             System.out.println("No se han ingresado vehículos");
         }
     }
+    
+    //funciones de Propietarios
+    //Eliminar propietarios
+    public void eliminarPropietarioPorDni() {
+        try {
+            String dniStr = JOptionPane.showInputDialog("Ingrese el DNI del propietario a eliminar:");
+
+            if (dniStr == null || dniStr.trim().isEmpty()) {
+                throw new IllegalArgumentException("No se ingresó un DNI.");
+            }
+
+            int dni = Integer.parseInt(dniStr.trim());
+
+            Propietario propietario = buscarPropietarioPorDni(dni);
+
+            // Si no se encuentra, forzamos un NullPointerException como ejemplo didáctico
+            if (propietario == null) {
+                throw new NullPointerException("Propietario no encontrado. (NullPointerException)");
+            }
+
+            int confirm = JOptionPane.showConfirmDialog(null,
+                    "¿Está seguro que desea eliminar al propietario:\n" +
+                    propietario.getNombres() + " " + propietario.getApellidos() + " (DNI: " + dni + ")?",
+                    "Confirmar eliminación",
+                    JOptionPane.YES_NO_OPTION);
+
+            if (confirm == JOptionPane.YES_OPTION) {
+                listaPropietarios.remove(propietario);
+                JOptionPane.showMessageDialog(null, "Propietario eliminado correctamente.");
+            } else {
+                JOptionPane.showMessageDialog(null, "Eliminación cancelada.");
+            }
+
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "Debe ingresar un número válido para el DNI. (NumberFormatException)");
+        } catch (IllegalArgumentException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        } catch (NullPointerException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+    }
+    
+    //Buscar propietarios
+    private Propietario buscarPropietarioPorDni(int dni){
+        for (Propietario p: listaPropietarios) {
+            if (p.getDni()==dni) {
+                return p;
+            }
+        }
+        return null;
+    }
+    
+    //Consultar propietarios
+    public void consultarPropietarios() {
+        try {
+            String dniStr = JOptionPane.showInputDialog("Ingrese el DNI del propietario:");
+
+            // Validar si se canceló o se dejó vacío
+            if (dniStr == null || dniStr.trim().isEmpty()) {
+                throw new IllegalArgumentException("No se ingresó un DNI.");
+            }
+
+            // Convertir a entero (puede lanzar NumberFormatException)
+            int dni = Integer.parseInt(dniStr.trim());
+
+            Propietario propietarioEncontrado = buscarPropietarioPorDni(dni);
+
+            // Si no lo encuentra, lanzamos NullPointerException como ejercicio
+            if (propietarioEncontrado == null) {
+                throw new NullPointerException("Propietario no encontrado. (NullPointerException)");
+            }
+
+            // Si se encontró, mostrar datos
+            JOptionPane.showMessageDialog(null,
+                "Propietario encontrado:\nNombre: " + propietarioEncontrado.getNombres() +
+                "\nApellido: " + propietarioEncontrado.getApellidos() +
+                "\nDirección: " + propietarioEncontrado.getDireccion());
+
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "DNI inválido. Debe ser un número. (NumberFormatException)");
+        } catch (IllegalArgumentException | NullPointerException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+    }
+
+    //Modificar un propietario
+    public void modificarPropietarioPorDni() {
+        try {
+            String dniStr = JOptionPane.showInputDialog("Ingrese el DNI del propietario a modificar:");
+
+            if (dniStr == null || dniStr.trim().isEmpty()) {
+                throw new IllegalArgumentException("Debe ingresar un DNI.");
+            }
+
+            int dni = Integer.parseInt(dniStr.trim());
+
+            Propietario propietario = buscarPropietarioPorDni(dni);
+
+            if (propietario == null) {
+                throw new NullPointerException("Propietario no encontrado. (NullPointerException)");
+            }
+
+            // Solicitar nuevos datos
+            String nuevosNombres = JOptionPane.showInputDialog("Nuevo nombre:", propietario.getNombres());
+            if (nuevosNombres == null || nuevosNombres.trim().isEmpty()) {
+                throw new IllegalArgumentException("El nombre no puede estar vacío.");
+            }
+
+            String nuevosApellidos = JOptionPane.showInputDialog("Nuevos apellidos:", propietario.getApellidos());
+            if (nuevosApellidos == null || nuevosApellidos.trim().isEmpty()) {
+                throw new IllegalArgumentException("Los apellidos no pueden estar vacíos.");
+            }
+
+            String nuevaDireccion = JOptionPane.showInputDialog("Nueva dirección:", propietario.getDireccion());
+            if (nuevaDireccion == null || nuevaDireccion.trim().isEmpty()) {
+                throw new IllegalArgumentException("La dirección no puede estar vacía.");
+            }
+
+            // Modificar datos si todo es válido
+            propietario.setNombres(nuevosNombres);
+            propietario.setApellidos(nuevosApellidos);
+            propietario.setDireccion(nuevaDireccion);
+
+            JOptionPane.showMessageDialog(null, "Propietario modificado correctamente.");
+
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "DNI inválido. Debe ser numérico. (NumberFormatException)");
+        } catch (IllegalArgumentException | NullPointerException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+    }
 
 
     @Override
@@ -253,6 +387,22 @@ public class ControlMenuSTYGui implements ActionListener {
         if(e.getSource() == this.vistaMenSTY.jbtn_listarPropietarios){
             listarPropietarios();
         }
+        
+        //Consultar Propietario
+        if (e.getSource()== this.vistaMenSTY.jbtn_consultarPropietario) {
+            consultarPropietarios();
+        }
+        
+        //Modificar propietarios
+        if (e.getSource()== this.vistaMenSTY.jbtn_modificarPropietario) {
+            modificarPropietarioPorDni();
+        }
+        
+        //Boton de Eliminar Propietarios
+        if (e.getSource() == this.vistaMenSTY.jbtn_eliminarPropietario) {
+            eliminarPropietarioPorDni();
+        }
+
   
         //Boton Ingresar Tarjeta Propiedad
         if(e.getSource() == this.vistaMenSTY.jbtn_tarjetaPropiedad){
@@ -263,7 +413,7 @@ public class ControlMenuSTYGui implements ActionListener {
         if(e.getSource() == this.vistaMenSTY.jbtn_listarTarjetas){
             listarTargetaPropietarios();
         }
-      
+        
 
     }
     
