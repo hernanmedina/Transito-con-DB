@@ -51,7 +51,7 @@ public class ControlTarjetaPropiedadGui implements ActionListener{
         //Se remueve el contenido por defecto del JComboBox jComb_propietarios
         this.vistaTarjePro.jComb_propietarios.removeAllItems();
         
-        //Se agrega el listado de vehículos al JComboBox jComb_propietarios
+        //Se agrega el listado de vehiculos al JComboBox jComb_propietarios
         for(Propietario p: this.listaPropietarios){
             this.vistaTarjePro.jComb_propietarios.addItem(p);
         }
@@ -74,7 +74,7 @@ public class ControlTarjetaPropiedadGui implements ActionListener{
             try{
                 this.unaTarjetaProp.setCodigo(Integer.parseInt(this.vistaTarjePro.jtf_codigo.getText()));
             }catch(NumberFormatException exc){
-                JOptionPane.showMessageDialog(this.vistaTarjePro, "Debe ingresar el código en números");
+                JOptionPane.showMessageDialog(this.vistaTarjePro, "Debe ingresar el codigo en numeros");
             }
             
             String fecha= this.vistaTarjePro.jtf_fecha.getText();
@@ -82,7 +82,7 @@ public class ControlTarjetaPropiedadGui implements ActionListener{
             if(fecha.matches("^[0-9]{2,}/[0-9]{2,}/[0-9]{4,}$")){
                 this.unaTarjetaProp.setFechaExp(fecha);
             }else{
-                JOptionPane.showMessageDialog(this.vistaTarjePro, "Formato de placa\nNo válido\n dd/mm/aaaa");
+                JOptionPane.showMessageDialog(this.vistaTarjePro, "Formato de placa\nNo valido\n dd/mm/aaaa");
             }
             
             this.listaTarjetasPropiedad.add(unaTarjetaProp);

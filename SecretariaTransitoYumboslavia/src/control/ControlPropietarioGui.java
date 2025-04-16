@@ -53,7 +53,7 @@ public void actionPerformed(ActionEvent e) {
         if (!nombres.trim().isEmpty()) {
             this.unPropietario.setNombres(nombres);
         } else {
-            JOptionPane.showMessageDialog(this.vistaProp, "El campo 'Nombres' no puede estar vacío.");
+            JOptionPane.showMessageDialog(this.vistaProp, "El campo 'Nombres' no puede estar vacio.");
             datosValidos = false;
         }
 
@@ -62,7 +62,7 @@ public void actionPerformed(ActionEvent e) {
         if (!apellidos.trim().isEmpty()) {
             this.unPropietario.setApellidos(apellidos);
         } else {
-            JOptionPane.showMessageDialog(this.vistaProp, "El campo 'Apellidos' no puede estar vacío.");
+            JOptionPane.showMessageDialog(this.vistaProp, "El campo 'Apellidos' no puede estar vacio.");
             datosValidos = false;
         }
 
@@ -71,7 +71,7 @@ public void actionPerformed(ActionEvent e) {
         if (!direccion.trim().isEmpty()) {
             this.unPropietario.setDireccion(direccion);
         } else {
-            JOptionPane.showMessageDialog(this.vistaProp, "El campo 'Dirección' no puede estar vacío.");
+            JOptionPane.showMessageDialog(this.vistaProp, "El campo 'Dirección' no puede estar vacio.");
             datosValidos = false;
         }
 

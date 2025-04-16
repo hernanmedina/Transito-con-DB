@@ -6,7 +6,6 @@ package control;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import modelo.Vehiculo;
@@ -39,10 +38,10 @@ public class ControlVehiculoGui implements ActionListener{
     
     
     
-    // Método para obtener el año más antiguo en la lista
+    // obtener el año mas antiguo en la lista
     private int obtenerAnhoMasAntiguo() {
         if (listadoAutos.isEmpty()) {
-            return 1886; // si no hay autos aún, usamos el valor base histórico
+            return 1886; // si no hay autos aun, usamos el valor base historico de el primer auto fabricado
         }
 
         int anhoMin = listadoAutos.get(0).getAnhoFab();
@@ -67,7 +66,7 @@ public class ControlVehiculoGui implements ActionListener{
             if (placa.matches("^[A-Z]{3}[0-9]{3}$")) {
                 this.vehiculo.setPlaca(placa);
             } else {
-                JOptionPane.showMessageDialog(vistaVehic, "Formato de placa no válido. Use el formato ABC123.");
+                JOptionPane.showMessageDialog(vistaVehic, "Formato de placa no valido. Use el formato ABC123.");
                 datosValidos = false;
             }
 
@@ -76,32 +75,32 @@ public class ControlVehiculoGui implements ActionListener{
             if (!marca.isEmpty()) {
                 this.vehiculo.setMarca(marca);
             } else {
-                JOptionPane.showMessageDialog(vistaVehic, "El campo 'Marca' no puede estar vacío.");
+                JOptionPane.showMessageDialog(vistaVehic, "El campo 'Marca' no puede estar vacio.");
                 datosValidos = false;
             }
 
-            // Validar año de fabricación 
+            // Validar año de fabricacion 
             try {
                 int anhoFab = Integer.parseInt(this.vistaVehic.jtf_anhoFab.getText().trim());
-                int anhoMin = obtenerAnhoMasAntiguo(); // año más antiguo 
+                int anhoMin = obtenerAnhoMasAntiguo(); // año mas antiguo 
                 int anhoMax = 2026;
 
                 if (anhoFab >= anhoMin && anhoFab <= anhoMax) {
                 this.vehiculo.setAnhoFab(anhoFab);
                 
                 } else {
-                    JOptionPane.showMessageDialog(vistaVehic, "El año 1886 valor base histórico del primer Auto fabricado.");
+                    JOptionPane.showMessageDialog(vistaVehic, "El año 1886 valor base historico del primer Auto fabricado.");
                     datosValidos = false;
                 }
             } catch (NumberFormatException exc) {
-                JOptionPane.showMessageDialog(vistaVehic, "Debe ingresar el año en números NumberFormatException.");
+                JOptionPane.showMessageDialog(vistaVehic, "Debe ingresar el año en numeros NumberFormatException.");
                 datosValidos = false;
             }
 
-            // Solo se agrega si todo es válido
+            // Solo se agrega si todo es valido
             if (datosValidos) {
                 this.listadoAutos.add(vehiculo);
-                JOptionPane.showMessageDialog(vistaVehic, "Vehículo agregado correctamente.");
+                JOptionPane.showMessageDialog(vistaVehic, "Vehiculo agregado correctamente.");
             }
         }
     }

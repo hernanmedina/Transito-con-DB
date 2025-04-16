@@ -23,7 +23,6 @@ import vista.VistaPropietario;
 public class ControlMenuSTYGui implements ActionListener {
     
     private VistaMenuSTY vistaMenSTY;
-    private VistaPropietario vistaPropietario;
     
     //Listas de objetos de las clases modelo
     private List<Vehiculo> listaVehiculos= new ArrayList<>();
@@ -61,29 +60,29 @@ public class ControlMenuSTYGui implements ActionListener {
     //Funciones de Vehiculos
     //Modificar vehiculos
     public void modificarVehiculoPorPlaca() {
-        String placaMod = JOptionPane.showInputDialog("Ingrese la placa del vehículo a modificar (formato ABC123):");
+        String placaMod = JOptionPane.showInputDialog("Ingrese la placa del vehiculo a modificar (formato ABC123):");
 
         // Validar formato
         if (placaMod == null || !placaMod.matches("^[A-Z]{3}[0-9]{3}$")) {
-            JOptionPane.showMessageDialog(null, "Formato de placa no válido.");
+            JOptionPane.showMessageDialog(null, "Formato de placa no valido.");
             return;
         }
 
         Vehiculo v = buscarVehiculoPorPlaca(placaMod);
 
         if (v == null) {
-            JOptionPane.showMessageDialog(null, "Vehículo no encontrado.");
+            JOptionPane.showMessageDialog(null, "Vehiculo no encontrado.");
             return;
         }
 
         // Pedir nuevos datos
         String nuevaMarca = JOptionPane.showInputDialog("Ingrese la nueva marca:", v.getMarca());
         if (nuevaMarca == null || nuevaMarca.trim().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "La marca no puede estar vacía.");
+            JOptionPane.showMessageDialog(null, "La marca no puede estar vacia.");
             return;
         }
 
-        String nuevoAnhoStr = JOptionPane.showInputDialog("Ingrese el nuevo año de fabricación:", v.getAnhoFab());
+        String nuevoAnhoStr = JOptionPane.showInputDialog("Ingrese el nuevo año de fabricacion:", v.getAnhoFab());
         int nuevoAnho;
         try {
             nuevoAnho = Integer.parseInt(nuevoAnhoStr);
@@ -94,37 +93,37 @@ public class ControlMenuSTYGui implements ActionListener {
                 return;
             }
         } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(null, "Debe ingresar un número válido para el año NumberFormatException.");
+            JOptionPane.showMessageDialog(null, "Debe ingresar un numero valido para el año (NumberFormatException).");
             return;
         }
 
-        // Si todo está bien, modificar el objeto
+        // modificar el objeto
         v.setMarca(nuevaMarca);
         v.setAnhoFab(nuevoAnho);
 
-        JOptionPane.showMessageDialog(null, "Vehículo actualizado correctamente.");
+        JOptionPane.showMessageDialog(null, "Vehiculo actualizado correctamente.");
     }
     
     //Consultar un vehiculo
     public void consultarVehiculos(){
         try {
-            String placaConsulta = JOptionPane.showInputDialog("Ingrese la placa del vehículo:");
+            String placaConsulta = JOptionPane.showInputDialog("Ingrese la placa del vehiculo:");
 
-            // Validar que el usuario no canceló el input (porque eso también da null)
+            // Validar que el usuario no cancelo el input (porque eso tambien da null)
             if (placaConsulta == null || placaConsulta.isEmpty()) {
-                throw new NullPointerException("No se ingresó una placa NullPointerException.");
+                throw new NullPointerException("No se ingreso una placa (NullPointerException).");
             }
 
             Vehiculo vehiculoEncontrado = buscarVehiculoPorPlaca(placaConsulta);
 
-            // Si no lo encuentra, lanzamos NullPointerException de forma explícita
+            // Si no lo encuentra
             if (vehiculoEncontrado == null) {
-                throw new NullPointerException("Vehiculo no encontrado. NullPointerException");
+                throw new NullPointerException("Vehiculo no encontrado. (NullPointerException)");
             }
 
-            // Si se encontró, mostramos los datos
+            // Si se encontro, mostramos los datos
             JOptionPane.showMessageDialog(null,
-                "Vehículo encontrado:\nMarca: " + vehiculoEncontrado.getMarca() +
+                "Vehiculo encontrado:\nMarca: " + vehiculoEncontrado.getMarca() +
                 "\nAño: " + vehiculoEncontrado.getAnhoFab());
 
         } catch (NullPointerException exc) {
@@ -140,35 +139,35 @@ public class ControlMenuSTYGui implements ActionListener {
                 return v;
             }
         }
-        return null; // No se encontró el vehículo
+        return null; // No se encontro el vehiculo
     }
     
     //Eliminar Vehiculos
     public void eliminarVehiculoPorPlaca() {
-        String placaEliminar = JOptionPane.showInputDialog("Ingrese la placa del vehículo a eliminar (formato ABC123):");
+        String placaEliminar = JOptionPane.showInputDialog("Ingrese la placa del vehiculo a eliminar (formato ABC123):");
 
         if (placaEliminar == null || !placaEliminar.matches("^[A-Z]{3}[0-9]{3}$")) {
-            JOptionPane.showMessageDialog(null, "Formato de placa no válido.");
+            JOptionPane.showMessageDialog(null, "Formato de placa no valido.");
             return;
         }
 
         Vehiculo v = buscarVehiculoPorPlaca(placaEliminar);
 
         if (v == null) {
-            JOptionPane.showMessageDialog(null, "Vehículo no encontrado.");
+            JOptionPane.showMessageDialog(null, "Vehiculo no encontrado.");
             return;
         }
 
         int confirm = JOptionPane.showConfirmDialog(null, 
-            "¿Está seguro que desea eliminar el vehículo con placa " + v.getPlaca() + "?", 
-            "Confirmar eliminación", 
+            "¿Esta seguro que desea eliminar el vehiculo con placa " + v.getPlaca() + "?", 
+            "Confirmar eliminacion", 
             JOptionPane.YES_NO_OPTION);
 
         if (confirm == JOptionPane.YES_OPTION) {
             listaVehiculos.remove(v);
-            JOptionPane.showMessageDialog(null, "Vehículo eliminado correctamente.");
+            JOptionPane.showMessageDialog(null, "Vehiculo eliminado correctamente.");
         } else {
-            JOptionPane.showMessageDialog(null, "Eliminación cancelada.");
+            JOptionPane.showMessageDialog(null, "Eliminacion cancelada.");
         }
     }
 
@@ -184,8 +183,9 @@ public class ControlMenuSTYGui implements ActionListener {
                 vehiculos += "-----------------------------\n";
             }
             JOptionPane.showMessageDialog(vistaMenSTY, vehiculos);
-        }else{            
-            System.out.println("No se han ingresado vehículos");
+        }else{ 
+            System.out.println("No se han ingresado vehiculos");
+            JOptionPane.showMessageDialog(vistaMenSTY,"No se han ingresado vehiculos");
         }
     }
     
@@ -198,12 +198,13 @@ public class ControlMenuSTYGui implements ActionListener {
                 propietarios += "DNI: "+this.listaPropietarios.get(i).getDni()+"\n";
                 propietarios += "Nobmres: "+this.listaPropietarios.get(i).getNombres()+"\n";
                 propietarios += "Apellidos: "+this.listaPropietarios.get(i).getApellidos()+"\n";
-                propietarios += "Dirección: "+this.listaPropietarios.get(i).getDireccion()+"\n";
+                propietarios += "Direccion: "+this.listaPropietarios.get(i).getDireccion()+"\n";
                 propietarios += "-----------------------------\n";
             }
             JOptionPane.showMessageDialog(vistaMenSTY, propietarios);
         }else{            
             System.out.println("No se han ingresado Propietarios");
+            JOptionPane.showMessageDialog(vistaMenSTY,"\"No se han ingresado Propietarios\"");
         }
     }
     
@@ -213,33 +214,33 @@ public class ControlMenuSTYGui implements ActionListener {
             String dniStr = JOptionPane.showInputDialog("Ingrese el DNI del propietario a eliminar:");
 
             if (dniStr == null || dniStr.trim().isEmpty()) {
-                throw new IllegalArgumentException("No se ingresó un DNI.");
+                throw new IllegalArgumentException("No se ingreso un DNI.");
             }
 
             int dni = Integer.parseInt(dniStr.trim());
 
             Propietario propietario = buscarPropietarioPorDni(dni);
 
-            // Si no se encuentra, forzamos un NullPointerException como ejemplo didáctico
+            // Si no se encuentra
             if (propietario == null) {
                 throw new NullPointerException("Propietario no encontrado. (NullPointerException)");
             }
 
             int confirm = JOptionPane.showConfirmDialog(null,
-                    "¿Está seguro que desea eliminar al propietario:\n" +
+                    "¿Esta seguro que desea eliminar al propietario:\n" +
                     propietario.getNombres() + " " + propietario.getApellidos() + " (DNI: " + dni + ")?",
-                    "Confirmar eliminación",
+                    "Confirmar eliminacion",
                     JOptionPane.YES_NO_OPTION);
 
             if (confirm == JOptionPane.YES_OPTION) {
                 listaPropietarios.remove(propietario);
                 JOptionPane.showMessageDialog(null, "Propietario eliminado correctamente.");
             } else {
-                JOptionPane.showMessageDialog(null, "Eliminación cancelada.");
+                JOptionPane.showMessageDialog(null, "Eliminacion cancelada.");
             }
 
         } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(null, "Debe ingresar un número válido para el DNI. (NumberFormatException)");
+            JOptionPane.showMessageDialog(null, "Debe ingresar un numero valido para el DNI. (NumberFormatException)");
         } catch (IllegalArgumentException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         } catch (NullPointerException ex) {
@@ -262,9 +263,9 @@ public class ControlMenuSTYGui implements ActionListener {
         try {
             String dniStr = JOptionPane.showInputDialog("Ingrese el DNI del propietario:");
 
-            // Validar si se canceló o se dejó vacío
+            // Validar si se cancelo o se dejo vacio por que esto tambien da null.
             if (dniStr == null || dniStr.trim().isEmpty()) {
-                throw new IllegalArgumentException("No se ingresó un DNI.");
+                throw new IllegalArgumentException("No se ingreso un DNI.");
             }
 
             // Convertir a entero (puede lanzar NumberFormatException)
@@ -277,14 +278,14 @@ public class ControlMenuSTYGui implements ActionListener {
                 throw new NullPointerException("Propietario no encontrado. (NullPointerException)");
             }
 
-            // Si se encontró, mostrar datos
+            // Si se encontro, mostrar datos
             JOptionPane.showMessageDialog(null,
                 "Propietario encontrado:\nNombre: " + propietarioEncontrado.getNombres() +
                 "\nApellido: " + propietarioEncontrado.getApellidos() +
-                "\nDirección: " + propietarioEncontrado.getDireccion());
+                "\nDireccion: " + propietarioEncontrado.getDireccion());
 
         } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(null, "DNI inválido. Debe ser un número. (NumberFormatException)");
+            JOptionPane.showMessageDialog(null, "DNI invalido. Debe ser un numero. (NumberFormatException)");
         } catch (IllegalArgumentException | NullPointerException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
@@ -310,20 +311,20 @@ public class ControlMenuSTYGui implements ActionListener {
             // Solicitar nuevos datos
             String nuevosNombres = JOptionPane.showInputDialog("Nuevo nombre:", propietario.getNombres());
             if (nuevosNombres == null || nuevosNombres.trim().isEmpty()) {
-                throw new IllegalArgumentException("El nombre no puede estar vacío.");
+                throw new IllegalArgumentException("El nombre no puede estar vacio.");
             }
 
             String nuevosApellidos = JOptionPane.showInputDialog("Nuevos apellidos:", propietario.getApellidos());
             if (nuevosApellidos == null || nuevosApellidos.trim().isEmpty()) {
-                throw new IllegalArgumentException("Los apellidos no pueden estar vacíos.");
+                throw new IllegalArgumentException("Los apellidos no pueden estar vacios.");
             }
 
-            String nuevaDireccion = JOptionPane.showInputDialog("Nueva dirección:", propietario.getDireccion());
+            String nuevaDireccion = JOptionPane.showInputDialog("Nueva direccion:", propietario.getDireccion());
             if (nuevaDireccion == null || nuevaDireccion.trim().isEmpty()) {
-                throw new IllegalArgumentException("La dirección no puede estar vacía.");
+                throw new IllegalArgumentException("La direccion no puede estar vacia.");
             }
 
-            // Modificar datos si todo es válido
+            // Modificar datos si todo es valido
             propietario.setNombres(nuevosNombres);
             propietario.setApellidos(nuevosApellidos);
             propietario.setDireccion(nuevaDireccion);
@@ -331,7 +332,7 @@ public class ControlMenuSTYGui implements ActionListener {
             JOptionPane.showMessageDialog(null, "Propietario modificado correctamente.");
 
         } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(null, "DNI inválido. Debe ser numérico. (NumberFormatException)");
+            JOptionPane.showMessageDialog(null, "DNI invalido. Debe ser numerico. (NumberFormatException)");
         } catch (IllegalArgumentException | NullPointerException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
@@ -353,6 +354,7 @@ public class ControlMenuSTYGui implements ActionListener {
             JOptionPane.showMessageDialog(vistaMenSTY, tarjetasPro);
         }else{            
             System.out.println("No se han registrado tarjetas de propiedad");
+            JOptionPane.showMessageDialog(vistaMenSTY,"No se han registrado tarjetas de propiedad");
         }
 
     }
@@ -361,10 +363,10 @@ public class ControlMenuSTYGui implements ActionListener {
     //Modificar tarjetas
     public void modificarTarjetaPorCodigo() {
         try {
-            String codigoStr = JOptionPane.showInputDialog("Ingrese el código de la tarjeta de propiedad a modificar:");
+            String codigoStr = JOptionPane.showInputDialog("Ingrese el codigo de la tarjeta de propiedad a modificar:");
 
             if (codigoStr == null || codigoStr.trim().isEmpty()) {
-                throw new IllegalArgumentException("Debe ingresar un código.");
+                throw new IllegalArgumentException("Debe ingresar un codigo.");
             }
 
             int codigo = Integer.parseInt(codigoStr.trim());
@@ -377,12 +379,12 @@ public class ControlMenuSTYGui implements ActionListener {
             String nuevaFecha = JOptionPane.showInputDialog("Ingrese nueva fecha (dd/mm/aaaa):", tarjeta.getFechaExp());
 
             if (nuevaFecha == null || nuevaFecha.trim().isEmpty()) {
-                throw new IllegalArgumentException("La fecha no puede estar vacía.");
+                throw new IllegalArgumentException("La fecha no puede estar vacia.");
             }
 
-            // Validación opcional: patrón simple dd/mm/aaaa
+            // Validacion opcional: patron simple dd/mm/aaaa
             if (!nuevaFecha.matches("^\\d{2}/\\d{2}/\\d{4}$")) {
-                throw new IllegalArgumentException("Formato de fecha inválido. Use dd/mm/aaaa.");
+                throw new IllegalArgumentException("Formato de fecha invalido. Use dd/mm/aaaa.");
             }
 
             tarjeta.setFechaExp(nuevaFecha);
@@ -397,10 +399,10 @@ public class ControlMenuSTYGui implements ActionListener {
     //Consultar tarjeta por codigo
     public void consultarTarjetaPorCodigo() {
         try {
-            String codigoStr = JOptionPane.showInputDialog("Ingrese el código de la tarjeta de propiedad:");
+            String codigoStr = JOptionPane.showInputDialog("Ingrese el codigo de la tarjeta de propiedad:");
 
             if (codigoStr == null || codigoStr.trim().isEmpty()) {
-                throw new IllegalArgumentException("Debe ingresar un código.");
+                throw new IllegalArgumentException("Debe ingresar un codigo.");
             }
 
             int codigo = Integer.parseInt(codigoStr.trim());
@@ -413,14 +415,14 @@ public class ControlMenuSTYGui implements ActionListener {
 
             JOptionPane.showMessageDialog(null,
                 "Tarjeta encontrada:\n" +
-                "Código: " + tarjeta.getCodigo() + "\n" +
-                "Fecha de expedición: " + tarjeta.getFechaExp() + "\n" +
-                "Vehículo: " + tarjeta.getVehiculo().getPlaca() + " - " + tarjeta.getVehiculo().getMarca() + "\n" +
+                "Codigo: " + tarjeta.getCodigo() + "\n" +
+                "Fecha de expedicion: " + tarjeta.getFechaExp() + "\n" +
+                "Vehiculo: " + tarjeta.getVehiculo().getPlaca() + " - " + tarjeta.getVehiculo().getMarca() + "\n" +
                 "Propietario: " + tarjeta.getPropietario().getNombres() + " " + tarjeta.getPropietario().getApellidos()
             );
 
         } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(null, "El código debe ser un número entero. (NumberFormatException)");
+            JOptionPane.showMessageDialog(null, "El codigo debe ser un numero entero. (NumberFormatException)");
         } catch (IllegalArgumentException | NullPointerException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
@@ -439,40 +441,49 @@ public class ControlMenuSTYGui implements ActionListener {
 
     
     //Eliminar tarjeta
-    public void eliminarTarjetaPorCodigo() {
-        try {
-            String codigoStr = JOptionPane.showInputDialog("Ingrese el código de la tarjeta de propiedad a eliminar:");
+public void eliminarTarjetaPorCodigo() {
+    try {
+        String codigoStr = JOptionPane.showInputDialog("Ingrese el codigo de la tarjeta de propiedad a eliminar:");
 
-            if (codigoStr == null || codigoStr.trim().isEmpty()) {
-                throw new IllegalArgumentException("Debe ingresar un código.");
-            }
-
-            int codigo = Integer.parseInt(codigoStr.trim());
-
-            TarjetaPropiedad tarjeta = buscarTarjetaPorCodigo(codigo);
-
-            if (tarjeta == null) {
-                throw new NullPointerException("Tarjeta no encontrada. (NullPointerException)");
-            }
-
-            int confirm = JOptionPane.showConfirmDialog(null,
-                    "¿Está seguro que desea eliminar la tarjeta con código " + codigo + "?",
-                    "Confirmar eliminación",
-                    JOptionPane.YES_NO_OPTION);
-
-            if (confirm == JOptionPane.YES_OPTION) {
-                listaTarjetasPropiedad.remove(tarjeta);
-                JOptionPane.showMessageDialog(null, "Tarjeta eliminada correctamente.");
-            } else {
-                JOptionPane.showMessageDialog(null, "Eliminación cancelada.");
-            }
-
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(null, "Código inválido. Debe ser numérico. (NumberFormatException)");
-        } catch (IllegalArgumentException | NullPointerException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage());
+        if (codigoStr == null || codigoStr.trim().isEmpty()) {
+            throw new IllegalArgumentException("Debe ingresar un codigo.");
         }
+
+        int codigo = Integer.parseInt(codigoStr.trim());
+
+        TarjetaPropiedad tarjeta = buscarTarjetaPorCodigo(codigo);
+
+        if (tarjeta == null) {
+            throw new NullPointerException("Tarjeta no encontrada. (NullPointerException)");
+        }
+
+        // Obtener vehículo y propietario directamente de la tarjeta
+        Vehiculo vehiculo = tarjeta.getVehiculo();
+        Propietario propietario = tarjeta.getPropietario();
+
+        int confirm = JOptionPane.showConfirmDialog(null,
+                "¿Esta seguro que desea eliminar la tarjeta con codigo " + codigo +
+                "?\nTambien se eliminara el vehiculo con placa " + vehiculo.getPlaca() +
+                " y el propietario " + propietario.getNombres() + " " + propietario.getApellidos() + ".",
+                "Confirmar eliminacion",
+                JOptionPane.YES_NO_OPTION);
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            listaTarjetasPropiedad.remove(tarjeta);
+            listaVehiculos.remove(vehiculo);
+            listaPropietarios.remove(propietario);
+            JOptionPane.showMessageDialog(null, "Tarjeta, vehiculo y propietario eliminados correctamente.");
+        } else {
+            JOptionPane.showMessageDialog(null, "Eliminacion cancelada.");
+        }
+
+    } catch (NumberFormatException ex) {
+        JOptionPane.showMessageDialog(null, "Codigo invalido. Debe ser numerico. (NumberFormatException)");
+    } catch (IllegalArgumentException | NullPointerException ex) {
+        JOptionPane.showMessageDialog(null, ex.getMessage());
     }
+}
+
 
 
 
