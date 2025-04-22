@@ -105,23 +105,30 @@ public class ControlMenuSTYGui implements ActionListener {
     }
     
     //Consultar un vehiculo
-    public void consultarVehiculos(){
+    public void consultarVehiculos() {
         try {
             String placaConsulta = JOptionPane.showInputDialog("Ingrese la placa del vehiculo:");
 
-            // Validar que el usuario no cancelo el input (porque eso tambien da null)
-            if (placaConsulta == null || placaConsulta.isEmpty()) {
+            // Validar que no este vacio ni cancelado
+            if (placaConsulta == null || placaConsulta.trim().isEmpty()) {
                 throw new NullPointerException("No se ingreso una placa (NullPointerException).");
             }
 
-            Vehiculo vehiculoEncontrado = buscarVehiculoPorPlaca(placaConsulta);
-
-            // Si no lo encuentra
-            if (vehiculoEncontrado == null) {
-                throw new NullPointerException("Vehiculo no encontrado. (NullPointerException)");
+            // Validar formato de placa
+            if (!placaConsulta.matches("^[A-Z]{3}[0-9]{3}$")) {
+                JOptionPane.showMessageDialog(null, "Formato de placa no valido (Ej: ABC123).");
+                return;
             }
 
-            // Si se encontro, mostramos los datos
+            // Buscar el vehiculo
+            Vehiculo vehiculoEncontrado = buscarVehiculoPorPlaca(placaConsulta);
+
+            // Validar si se encontro
+            if (vehiculoEncontrado == null) {
+                throw new NullPointerException("Vehiculo no encontrado (NullPointerException).");
+            }
+
+            // Mostrar informacion del vehiculo
             JOptionPane.showMessageDialog(null,
                 "Vehiculo encontrado:\nMarca: " + vehiculoEncontrado.getMarca() +
                 "\nAño: " + vehiculoEncontrado.getAnhoFab());
@@ -130,7 +137,6 @@ public class ControlMenuSTYGui implements ActionListener {
             JOptionPane.showMessageDialog(null, exc.getMessage());
         }
     }
-
 
     //Buscar vehiculos 
     private Vehiculo buscarVehiculoPorPlaca(String placaBuscada) {
@@ -540,7 +546,6 @@ public void eliminarTarjetaPorCodigo() {
             eliminarPropietarioPorDni();
         }
 
-  
         //Boton Ingresar Tarjeta Propiedad
         if(e.getSource() == this.vistaMenSTY.jbtn_tarjetaPropiedad){
             ControlTarjetaPropiedadGui unControlPropietarioGui= new ControlTarjetaPropiedadGui(this.listaVehiculos, this.listaPropietarios, this.listaTarjetasPropiedad);

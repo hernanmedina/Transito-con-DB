@@ -6,7 +6,6 @@ package control;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import modelo.TarjetaPropiedad;
@@ -24,9 +23,9 @@ public class ControlTarjetaPropiedadGui implements ActionListener{
     private TarjetaPropiedad unaTarjetaProp;
     
     //Listas de objetos de las clases modelo
-    private List<Vehiculo> listadoAutos= new ArrayList<>();       
-    private List<Propietario> listaPropietarios= new ArrayList<>();
-    private List<TarjetaPropiedad> listaTarjetasPropiedad= new ArrayList<>();
+    private List<Vehiculo> listadoAutos;       
+    private List<Propietario> listaPropietarios;
+    private List<TarjetaPropiedad> listaTarjetasPropiedad;
     
     public ControlTarjetaPropiedadGui(List<Vehiculo> listaAuts, List<Propietario> listaPropitars, List<TarjetaPropiedad> listaTarjProp){
         

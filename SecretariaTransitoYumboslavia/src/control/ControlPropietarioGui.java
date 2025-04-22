@@ -6,7 +6,6 @@ package control;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -23,14 +22,14 @@ public class ControlPropietarioGui implements ActionListener{
 
     private VistaPropietario vistaProp;
     private Propietario unPropietario;    
-    private List<Propietario> listaPropietarios= new ArrayList<>();
+    private List<Propietario> listaPropietarios;
     
     public ControlPropietarioGui(List<Propietario> listaPropitars){
         
         this.vistaProp= new VistaPropietario();
         this.vistaProp.setVisible(true);
         this.vistaProp.jbtn_aceptar.addActionListener(this);
-        this.listaPropietarios= listaPropitars;
+        this.listaPropietarios= listaPropitars; // LISTA COMPARTIDA
     }
     
    @Override
