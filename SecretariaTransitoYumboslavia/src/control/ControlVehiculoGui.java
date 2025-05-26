@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package control;
 
 import java.awt.event.ActionEvent;
@@ -9,100 +5,115 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import javax.swing.JOptionPane;
 import modelo.Vehiculo;
-import vista.*;
+import modelo.VehiculoDAO;
+import vista.VistaVehiculo;
 
-
-/**
- *
- * @author UNIVALLE
- */
 public class ControlVehiculoGui implements ActionListener{
 
-    private VistaVehiculo vistaVehic;
-    private VistaPropietario vistaProp;
-    private Vehiculo vehiculo;
-    private List<Vehiculo> listadoAutos;
-    
-    public ControlVehiculoGui(List<Vehiculo> listaAuts){
-        
-        this.vistaVehic= new VistaVehiculo();
-        this.vistaVehic.setVisible(true);
-        this.vistaVehic.jbtn_aceptar.addActionListener(this);
-        this.listadoAutos= listaAuts;
-        
-    }
-    
-    public Vehiculo getVehiculo(){
-        return this.vehiculo;
-    }
-    
-    
-    
-    // obtener el año mas antiguo en la lista
-    private int obtenerAnhoMasAntiguo() {
-        if (listadoAutos.isEmpty()) {
-            return 1886; // si no hay autos aun, usamos el valor base historico de el primer auto fabricado
-        }
+    private VistaVehiculo vistaVehiculo;
+    private VehiculoDAO UnVehiculoDAO;
+    private Vehiculo UnVehiculo;
 
-        int anhoMin = listadoAutos.get(0).getAnhoFab();
-        for (Vehiculo v : listadoAutos) {
-            if (v.getAnhoFab() < anhoMin) {
-                anhoMin = v.getAnhoFab();
-            }
-        }
-        return anhoMin;
+    public ControlVehiculoGui() {
+        this.UnVehiculoDAO = new VehiculoDAO();
+        this.UnVehiculo = new Vehiculo();
+
+        this.vistaVehiculo = new VistaVehiculo();
+        this.vistaVehiculo.setVisible(true);
+        
+        this.vistaVehiculo.jbtn_aceptar.addActionListener(this);
+        this.vistaVehiculo.jbtn_consultar.addActionListener(this);
+        this.vistaVehiculo.jbtn_modificar.addActionListener(this);
+        this.vistaVehiculo.jbtn_eliminar.addActionListener(this);
+        this.vistaVehiculo.jbtn_listar.addActionListener(this);
     }
-           
+
     @Override
     public void actionPerformed(ActionEvent e) {
-
-        if (e.getSource() == this.vistaVehic.jbtn_aceptar) {
-
-            boolean datosValidos = true;
-            this.vehiculo = new Vehiculo();
-
-            // Validar placa
-            String placa = this.vistaVehic.jtf_placa.getText().trim();
-            if (placa.matches("^[A-Z]{3}[0-9]{3}$")) {
-                this.vehiculo.setPlaca(placa);
-            } else {
-                JOptionPane.showMessageDialog(vistaVehic, "Formato de placa no valido. Use el formato ABC123.");
-                datosValidos = false;
-            }
-
-            // Validar marca
-            String marca = this.vistaVehic.jtf_marca.getText().trim();
-            if (!marca.isEmpty()) {
-                this.vehiculo.setMarca(marca);
-            } else {
-                JOptionPane.showMessageDialog(vistaVehic, "El campo 'Marca' no puede estar vacio.");
-                datosValidos = false;
-            }
-
-            // Validar año de fabricacion 
+       //Boton agregar
+        if (e.getSource()== this.vistaVehiculo.jbtn_aceptar) {
             try {
-                int anhoFab = Integer.parseInt(this.vistaVehic.jtf_anhoFab.getText().trim());
-                int anhoMin = obtenerAnhoMasAntiguo(); // año mas antiguo 
-                int anhoMax = 2026;
-
-                if (anhoFab >= anhoMin && anhoFab <= anhoMax) {
-                this.vehiculo.setAnhoFab(anhoFab);
                 
-                } else {
-                    JOptionPane.showMessageDialog(vistaVehic, "El año 1886 valor base historico del primer Auto fabricado.");
-                    datosValidos = false;
+                this.UnVehiculo.setPlaca(this.vistaVehiculo.jtf_placa.getText());            
+                this.UnVehiculo.setMarca(this.vistaVehiculo.jtf_marca.getText());        
+                this.UnVehiculo.setAnhoFab(Integer.parseInt(this.vistaVehiculo.jtf_anhoFab.getText())); 
+                
+                if (!this.UnVehiculo.getPlaca().equals("") && !this.UnVehiculo.getMarca().equals("") && this.UnVehiculo.getAnhoFab() != 0) {
+                    
+                    if (this.UnVehiculoDAO.insertarVehiculo(UnVehiculo)){
+                        JOptionPane.showMessageDialog(this.vistaVehiculo, "Datos ingresados con éxito!!!");
+                        limpiarCampos();
+                    }
+                }else{
+                    JOptionPane.showMessageDialog(this.vistaVehiculo,"Todos los campos son obligatorios\nY ninguno debe ir en blanco");
                 }
-            } catch (NumberFormatException exc) {
-                JOptionPane.showMessageDialog(vistaVehic, "Debe ingresar el año en numeros NumberFormatException.");
-                datosValidos = false;
-            }
-
-            // Solo se agrega si todo es valido
-            if (datosValidos) {
-                this.listadoAutos.add(vehiculo);
-                JOptionPane.showMessageDialog(vistaVehic, "Vehiculo agregado correctamente.");
+            
+            }catch(Exception ex){
+                JOptionPane.showMessageDialog(this.vistaVehiculo,"Los campos placa, marca y año de fabricacion son obligatorios");
             }
         }
-    }
+        
+        //Boton consultar
+        if (e.getSource()== this.vistaVehiculo.jbtn_consultar) {
+            try{
+                this.UnVehiculo= this.UnVehiculoDAO.consultarQuery(this.vistaVehiculo.jtf_placa.getText());                
+                this.vistaVehiculo.jtf_placa.setText(this.UnVehiculo.getPlaca());
+                this.vistaVehiculo.jtf_marca.setText(this.UnVehiculo.getMarca());
+                this.vistaVehiculo.jtf_anhoFab.setText(this.UnVehiculo.getAnhoFab()+"");
+                
+            }catch(NumberFormatException ex){
+                JOptionPane.showMessageDialog(this.vistaVehiculo,"El campo placa es obligatorio\nY deben ser en formato ABC123");
+            }
+        }
+        
+        //Boton Modificar
+        if (e.getSource()== this.vistaVehiculo.jbtn_modificar) {
+            try{
+                this.UnVehiculo.setPlaca(this.vistaVehiculo.jtf_placa.getText());
+                this.UnVehiculo.setMarca(this.vistaVehiculo.jtf_marca.getText()); 
+                this.UnVehiculo.setAnhoFab(Integer.parseInt(this.vistaVehiculo.jtf_anhoFab.getText()));
 
+                if(!this.UnVehiculo.getPlaca().equals("") && !this.UnVehiculo.getMarca().equals("")&& this.UnVehiculo.getAnhoFab() != 0){
+                    if(this.UnVehiculoDAO.actualizarVehiculo(UnVehiculo)){
+                        JOptionPane.showMessageDialog(this.vistaVehiculo, "Datos actualizados con éxito!!!");
+                        limpiarCampos();
+                    }else{
+                        JOptionPane.showMessageDialog(this.vistaVehiculo, "Datos no actualizados!!!");
+                    }
+                }else{
+                    JOptionPane.showMessageDialog(this.vistaVehiculo,"Todos los campos son obligatorios\nY ninguno debe ir en blanco");
+                }                
+            }catch(NumberFormatException ex){
+                JOptionPane.showMessageDialog(this.vistaVehiculo,"El campo placa es obligatorio\nY deben ser en formato ABC123");
+            }
+        }
+        
+        //Boton Eliminar
+        if(e.getSource() == this.vistaVehiculo.jbtn_eliminar){
+            try{
+                String placa= this.vistaVehiculo.jtf_placa.getText();
+            
+                if(this.UnVehiculoDAO.eliminarVehiculo(placa)){
+                    JOptionPane.showMessageDialog(this.vistaVehiculo, "Datos Eliminados!!!");
+                    limpiarCampos();
+                }else{
+                    JOptionPane.showMessageDialog(this.vistaVehiculo, "Datos No Eliminados!!!");
+                }
+                
+            }catch(Exception ex){
+                JOptionPane.showMessageDialog(this.vistaVehiculo,"El campo placa es obligatorio\nY deben ser en formato ABC123");
+            }            
+        } 
+        
+        //Boton Listar Todos 
+        if(e.getSource() == this.vistaVehiculo.jbtn_listar){
+            this.UnVehiculoDAO.mostrarLista(this.vistaVehiculo.jTable_vehiculos);
+        }
+    }
+    
+    public void limpiarCampos(){
+        this.vistaVehiculo.jtf_placa.setText("");
+        this.vistaVehiculo.jtf_marca.setText("");
+        this.vistaVehiculo.jtf_anhoFab.setText("");
+    }
 }

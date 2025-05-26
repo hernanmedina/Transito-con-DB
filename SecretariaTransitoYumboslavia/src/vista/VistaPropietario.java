@@ -35,6 +35,11 @@ public class VistaPropietario extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jtf_direccion = new javax.swing.JTextField();
         jbtn_aceptar = new javax.swing.JButton();
+        jbtn_Atualizar = new javax.swing.JButton();
+        jbtn_Eliminar = new javax.swing.JButton();
+        jbtn_Consultar = new javax.swing.JButton();
+        jbtn_Listar = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Propietario");
@@ -47,7 +52,28 @@ public class VistaPropietario extends javax.swing.JFrame {
 
         jLabel3.setText("Dirección:");
 
-        jbtn_aceptar.setText("Aceptar");
+        jbtn_aceptar.setText("Registrar");
+
+        jbtn_Atualizar.setText("Atualizar");
+        jbtn_Atualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtn_AtualizarActionPerformed(evt);
+            }
+        });
+
+        jbtn_Eliminar.setText("Eliminar");
+        jbtn_Eliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtn_EliminarActionPerformed(evt);
+            }
+        });
+
+        jbtn_Consultar.setText("Consultar");
+
+        jbtn_Listar.setText("Listar Propietarios");
+
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setText("Propietarios ");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -57,32 +83,48 @@ public class VistaPropietario extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(71, 71, 71)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(Apellidos)
+                                .addGap(38, 38, 38)
+                                .addComponent(jtf_apellidos))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel3)
                                 .addGap(37, 37, 37)
                                 .addComponent(jtf_direccion))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(Apellidos)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel1))
                                 .addGap(38, 38, 38)
-                                .addComponent(jtf_apellidos, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(67, 67, 67)
-                                .addComponent(jtf_dni, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(38, 38, 38)
-                                .addComponent(jtf_nombres, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jtf_dni)
+                                    .addComponent(jtf_nombres)))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(139, 139, 139)
-                        .addComponent(jbtn_aceptar)))
-                .addContainerGap(101, Short.MAX_VALUE))
+                        .addGap(67, 67, 67)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jbtn_Listar, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jbtn_aceptar)
+                                .addGap(18, 18, 18)
+                                .addComponent(jbtn_Atualizar)
+                                .addGap(18, 18, 18)
+                                .addComponent(jbtn_Consultar)
+                                .addGap(18, 18, 18)
+                                .addComponent(jbtn_Eliminar)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addGap(90, 90, 90))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(62, 62, 62)
+                .addGap(15, 15, 15)
+                .addComponent(jLabel4)
+                .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jtf_dni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -94,18 +136,32 @@ public class VistaPropietario extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(Apellidos)
                     .addComponent(jtf_apellidos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jtf_direccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(34, 34, 34)
-                .addComponent(jbtn_aceptar)
-                .addContainerGap(63, Short.MAX_VALUE))
+                .addGap(46, 46, 46)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jbtn_aceptar)
+                    .addComponent(jbtn_Atualizar)
+                    .addComponent(jbtn_Consultar)
+                    .addComponent(jbtn_Eliminar))
+                .addGap(18, 18, 18)
+                .addComponent(jbtn_Listar)
+                .addContainerGap(55, Short.MAX_VALUE))
         );
 
-        setSize(new java.awt.Dimension(416, 309));
+        setSize(new java.awt.Dimension(523, 342));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jbtn_AtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtn_AtualizarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jbtn_AtualizarActionPerformed
+
+    private void jbtn_EliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtn_EliminarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jbtn_EliminarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -147,6 +203,11 @@ public class VistaPropietario extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    public javax.swing.JButton jbtn_Atualizar;
+    public javax.swing.JButton jbtn_Consultar;
+    public javax.swing.JButton jbtn_Eliminar;
+    public javax.swing.JButton jbtn_Listar;
     public javax.swing.JButton jbtn_aceptar;
     public javax.swing.JTextField jtf_apellidos;
     public javax.swing.JTextField jtf_direccion;

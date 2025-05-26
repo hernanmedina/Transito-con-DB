@@ -29,18 +29,7 @@ public class VistaMenuSTY extends javax.swing.JFrame {
         jbtn_vehiculo = new javax.swing.JButton();
         jbtn_propietario = new javax.swing.JButton();
         jbtn_tarjetaPropiedad = new javax.swing.JButton();
-        jbtn_listarVehiculos = new javax.swing.JButton();
-        jbtn_listarPropietarios = new javax.swing.JButton();
-        jbtn_listarTarjetas = new javax.swing.JButton();
-        jbtn_consultarTarjeta = new javax.swing.JButton();
-        jbtn_consultarVehiculo = new javax.swing.JButton();
-        jbtn_consultarPropietario = new javax.swing.JButton();
-        jbtn_elimnarTrajeta = new javax.swing.JButton();
-        jbtn_modificarVehiculo = new javax.swing.JButton();
-        jbtn_modificarPropietario = new javax.swing.JButton();
-        jbtn_modificarTarjeta = new javax.swing.JButton();
-        jbtn_eliminarVehiculo = new javax.swing.JButton();
-        jbtn_eliminarPropietario = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Secretaría de Tránsito Yumboslavia");
@@ -56,72 +45,13 @@ public class VistaMenuSTY extends javax.swing.JFrame {
         jbtn_tarjetaPropiedad.setText("Ingresar Tarjeta Propiedad");
         getContentPane().add(jbtn_tarjetaPropiedad, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 180, 170, -1));
 
-        jbtn_listarVehiculos.setText("Listar Vehículos");
-        jbtn_listarVehiculos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtn_listarVehiculosActionPerformed(evt);
-            }
-        });
-        getContentPane().add(jbtn_listarVehiculos, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 70, 150, -1));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Menú De Gestión");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(7, 20, 240, -1));
 
-        jbtn_listarPropietarios.setText("Listar Propietarios");
-        getContentPane().add(jbtn_listarPropietarios, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 130, 150, -1));
-
-        jbtn_listarTarjetas.setText("Listar Tarjetas");
-        getContentPane().add(jbtn_listarTarjetas, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 180, 150, -1));
-
-        jbtn_consultarTarjeta.setText("Consultar Tarjeta");
-        jbtn_consultarTarjeta.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtn_consultarTarjetaActionPerformed(evt);
-            }
-        });
-        getContentPane().add(jbtn_consultarTarjeta, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 180, 140, -1));
-
-        jbtn_consultarVehiculo.setText("Consultar Vehículo");
-        getContentPane().add(jbtn_consultarVehiculo, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 70, 140, -1));
-
-        jbtn_consultarPropietario.setText("Consultar Propieatrio");
-        getContentPane().add(jbtn_consultarPropietario, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 130, 140, -1));
-
-        jbtn_elimnarTrajeta.setText("Eliminar Tarjeta");
-        getContentPane().add(jbtn_elimnarTrajeta, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 180, 120, -1));
-
-        jbtn_modificarVehiculo.setText("Modificar Vehículo");
-        jbtn_modificarVehiculo.addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentMoved(java.awt.event.ComponentEvent evt) {
-                jbtn_modificarVehiculoComponentMoved(evt);
-            }
-        });
-        getContentPane().add(jbtn_modificarVehiculo, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 70, 120, -1));
-
-        jbtn_modificarPropietario.setText("Modificar Propietario");
-        getContentPane().add(jbtn_modificarPropietario, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 130, 120, -1));
-
-        jbtn_modificarTarjeta.setText("Modificar Tarjeta");
-        getContentPane().add(jbtn_modificarTarjeta, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 180, 120, -1));
-
-        jbtn_eliminarVehiculo.setText("Eliminar Vehiculo");
-        getContentPane().add(jbtn_eliminarVehiculo, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 70, 120, -1));
-
-        jbtn_eliminarPropietario.setText("Eliminar Propietario");
-        getContentPane().add(jbtn_eliminarPropietario, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 130, 120, -1));
-
-        setSize(new java.awt.Dimension(977, 282));
+        setSize(new java.awt.Dimension(271, 282));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jbtn_listarVehiculosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtn_listarVehiculosActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jbtn_listarVehiculosActionPerformed
-
-    private void jbtn_consultarTarjetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtn_consultarTarjetaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jbtn_consultarTarjetaActionPerformed
-
-    private void jbtn_modificarVehiculoComponentMoved(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jbtn_modificarVehiculoComponentMoved
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jbtn_modificarVehiculoComponentMoved
 
     /**
      * @param args the command line arguments
@@ -159,18 +89,7 @@ public class VistaMenuSTY extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JButton jbtn_consultarPropietario;
-    public javax.swing.JButton jbtn_consultarTarjeta;
-    public javax.swing.JButton jbtn_consultarVehiculo;
-    public javax.swing.JButton jbtn_eliminarPropietario;
-    public javax.swing.JButton jbtn_eliminarVehiculo;
-    public javax.swing.JButton jbtn_elimnarTrajeta;
-    public javax.swing.JButton jbtn_listarPropietarios;
-    public javax.swing.JButton jbtn_listarTarjetas;
-    public javax.swing.JButton jbtn_listarVehiculos;
-    public javax.swing.JButton jbtn_modificarPropietario;
-    public javax.swing.JButton jbtn_modificarTarjeta;
-    public javax.swing.JButton jbtn_modificarVehiculo;
+    private javax.swing.JLabel jLabel1;
     public javax.swing.JButton jbtn_propietario;
     public javax.swing.JButton jbtn_tarjetaPropiedad;
     public javax.swing.JButton jbtn_vehiculo;
