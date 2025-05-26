@@ -27,15 +27,16 @@ public class ControlMenuSTYGui implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == this.vistaMenSTY.jbtn_vehiculo) {
-            new ControlVehiculoGui(); // Ahora sin lista
+            new ControlVehiculoGui(); 
+        }
+        
+        if (e.getSource() == this.vistaMenSTY.jbtn_propietario) {
+            new ControlPropietarioGui();
         }
 
         if (e.getSource() == this.vistaMenSTY.jbtn_tarjetaPropiedad) {
            // new ControlTarjetaPropiedadGui();
         }
 
-        if (e.getSource() == this.vistaMenSTY.jbtn_propietario) {
-           // new ControlPropietarioGui();
-        }
     }
 }

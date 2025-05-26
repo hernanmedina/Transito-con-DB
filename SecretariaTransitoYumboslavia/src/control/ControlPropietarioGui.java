@@ -6,13 +6,11 @@ package control;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 import javax.swing.JOptionPane;
 
 import modelo.Propietario;
+import modelo.PropietarioDAO;
 import vista.VistaPropietario;
-
-
 
 /**
  *
@@ -20,284 +18,129 @@ import vista.VistaPropietario;
  */
 public class ControlPropietarioGui implements ActionListener{
 
-    private VistaPropietario vistaProp;
-    private Propietario unPropietario;    
-    private List<Propietario> listaPropietarios;
+    private VistaPropietario vistaPropietario;
+    private Propietario unPropietario; 
+    private PropietarioDAO unPropietarioDAO;
+   
     
-    public ControlPropietarioGui(List<Propietario> listaPropitars){
-        
-        this.vistaProp= new VistaPropietario();
-        this.vistaProp.setVisible(true);
-        this.vistaProp.jbtn_aceptar.addActionListener(this);
-        this.vistaProp.jbtn_Atualizar.addActionListener(this);
-        this.vistaProp.jbtn_Eliminar.addActionListener(this);
-        this.vistaProp.jbtn_Consultar.addActionListener(this);
-        this.vistaProp.jbtn_Listar.addActionListener(this);
-        this.listaPropietarios= listaPropitars; // LISTA COMPARTIDA
-    }
-    
-    //funciones de Propietarios   
-    //Listar Propietarios
-    public void listarPropietarios(){
-        String propietarios="";
-        if(this.listaPropietarios.size()>0){                
-            for(int i=0; i<this.listaPropietarios.size(); i++){
-                propietarios += "DNI: "+this.listaPropietarios.get(i).getDni()+"\n";
-                propietarios += "Nobmres: "+this.listaPropietarios.get(i).getNombres()+"\n";
-                propietarios += "Apellidos: "+this.listaPropietarios.get(i).getApellidos()+"\n";
-                propietarios += "Direccion: "+this.listaPropietarios.get(i).getDireccion()+"\n";
-                propietarios += "-----------------------------\n";
-            }
-            JOptionPane.showMessageDialog(null, propietarios);
-        }else{            
-            System.out.println("No se han ingresado Propietarios");
-            JOptionPane.showMessageDialog(null,"\"No se han ingresado Propietarios\"");
-        }
-    }
-    
-     // Limpiar campos
-    private void limpiarCampos() {
-        this.vistaProp.jtf_apellidos.setText("");
-        this.vistaProp.jtf_nombres.setText("");
-        this.vistaProp.jtf_direccion.setText("");
-        this.vistaProp.jtf_dni.setText("");
-    }
-    
-    //Eliminar propietarios
-    public void eliminarPropietarioPorDni() {
-        try {
-            String dniStr = this.vistaProp.jtf_dni.getText() ;
-
-            if (dniStr == null || dniStr.trim().isEmpty()) {
-                throw new IllegalArgumentException("No se ingreso un DNI.");
-            }
-
-            int dni = Integer.parseInt(dniStr.trim());
-
-            Propietario propietario = buscarPropietarioPorDni(dni);
-
-            // Si no se encuentra
-            if (propietario == null) {
-                throw new NullPointerException("Propietario no encontrado. (NullPointerException)");
-            }
-
-            int confirm = JOptionPane.showConfirmDialog(null,
-                    "¿Esta seguro que desea eliminar al propietario:\n" +
-                    propietario.getNombres() + " " + propietario.getApellidos() + " (DNI: " + dni + ")?",
-                    "Confirmar eliminacion",
-                    JOptionPane.YES_NO_OPTION);
-
-            if (confirm == JOptionPane.YES_OPTION) {
-                listaPropietarios.remove(propietario);
-                JOptionPane.showMessageDialog(null, "Propietario eliminado correctamente.");
-            } else {
-                JOptionPane.showMessageDialog(null, "Eliminacion cancelada.");
-            }
-
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(null, "Debe ingresar un numero valido para el DNI. (NumberFormatException)");
-        } catch (IllegalArgumentException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage());
-        } catch (NullPointerException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage());
-        }
-    }
-    
-    
-    //Buscar propietarios
-    private Propietario buscarPropietarioPorDni(int dni){
-        for (Propietario p: listaPropietarios) {
-            if (p.getDni()==dni) {
-                return p;
-            }
-        }
-        return null;
-    }
-    
-    //Consultar propietarios
-    public void consultarPropietarios() {
-        try {
-            String dniStr = this.vistaProp.jtf_dni.getText() ;
-
-            // Validar si se cancelo o se dejo vacio por que esto tambien da null.
-            if (dniStr == null || dniStr.trim().isEmpty()) {
-                throw new IllegalArgumentException("No se ingreso un DNI.");
-            }
-
-            // Convertir a entero (puede lanzar NumberFormatException)
-            int dni = Integer.parseInt(dniStr.trim());
-
-            Propietario propietarioEncontrado = buscarPropietarioPorDni(dni);
-
-            // Si no lo encuentra, lanzamos NullPointerException 
-            if (propietarioEncontrado == null) {
-                throw new NullPointerException("Propietario no encontrado. (NullPointerException)");
-            }
-
-            // Si se encontro, mostrar datos
-            JOptionPane.showMessageDialog(null,
-                "Propietario encontrado:\nNombre: " + propietarioEncontrado.getNombres() +
-                "\nApellido: " + propietarioEncontrado.getApellidos() +
-                "\nDireccion: " + propietarioEncontrado.getDireccion());
-
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(null, "DNI invalido. Debe ser un numero. (NumberFormatException)");
-        } catch (IllegalArgumentException | NullPointerException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage());
-        }
-    }
-    
-    // Validar si el propietario existe
-    private boolean existePropietarioPorDni(int dni) {
-        for (Propietario p : listaPropietarios) {
-            if (p.getDni() == dni) {
-                return true; 
-            }
-        }
-        return false; 
-    }
-    
-    //Modificar un propietario
-    public void modificarPropietarioPorDni() {
-        try {
-            String dniStr = this.vistaProp.jtf_dni.getText();
-
-            if (dniStr == null || dniStr.trim().isEmpty()) {
-                throw new IllegalArgumentException("Debe ingresar un DNI.");
-            }
-
-            int dni = Integer.parseInt(dniStr.trim());
-
-            Propietario propietario = buscarPropietarioPorDni(dni);
-
-            if (propietario == null ) {
-                throw new NullPointerException("Propietario no encontrado. (NullPointerException)");
-            }
-
-            // Confirmar modificacion
-            int confirm = JOptionPane.showConfirmDialog(null,
-                    "¿Está seguro que desea modificar al propietario con DNI " + propietario.getDni() + "?",
-                    "Confirmar modificación",
-                    JOptionPane.YES_NO_OPTION);
-
-            if (confirm == JOptionPane.YES_OPTION) {
-
-                // Solicitar nuevos datos
-                String nuevosNombres = this.vistaProp.jtf_nombres.getText();
-                if (nuevosNombres == null || nuevosNombres.trim().isEmpty()) {
-                    throw new IllegalArgumentException("El nombre no puede estar vacío.");
-                }
-
-                String nuevosApellidos = this.vistaProp.jtf_apellidos.getText();
-                if (nuevosApellidos == null || nuevosApellidos.trim().isEmpty()) {
-                    throw new IllegalArgumentException("Los apellidos no pueden estar vacíos.");
-                }
-
-                String nuevaDireccion = this.vistaProp.jtf_direccion.getText();
-                if (nuevaDireccion == null || nuevaDireccion.trim().isEmpty()) {
-                    throw new IllegalArgumentException("La dirección no puede estar vacía.");
-                }
-
-                // Modificar datos
-                propietario.setNombres(nuevosNombres);
-                propietario.setApellidos(nuevosApellidos);
-                propietario.setDireccion(nuevaDireccion);
-
-                JOptionPane.showMessageDialog(null, "Propietario modificado correctamente.");
-
-            } else {
-                JOptionPane.showMessageDialog(null, "Modificación cancelada.");
-            }
-
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(null, "DNI inválido. Debe ser numérico. (NumberFormatException)");
-        } catch (IllegalArgumentException | NullPointerException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage());
-        }
-    }
-
-    
-    //Agregar Propietario
-    public void agregarPropietario(){
-         
-        boolean datosValidos = true;
+    public ControlPropietarioGui(){
+        this.unPropietarioDAO = new PropietarioDAO();
         this.unPropietario = new Propietario();
-        int dni = Integer.parseInt(this.vistaProp.jtf_dni.getText());
-
-        // Validación de DNI (numérico)
-        try {
-            if (existePropietarioPorDni(dni)) {
-                JOptionPane.showMessageDialog(null, "Ya existe un propietario con ese DNI.");
-                return; 
-            }
-            this.unPropietario.setDni(dni);
-        } catch (NumberFormatException exc) {
-            JOptionPane.showMessageDialog(this.vistaProp, "Ingrese valores numéricos para el DNI.");
-            datosValidos = false;
-        }
-
-        // Validación de nombres
-        String nombres = this.vistaProp.jtf_nombres.getText();
-        if (!nombres.trim().isEmpty()) {
-            this.unPropietario.setNombres(nombres);
-        } else {
-            JOptionPane.showMessageDialog(this.vistaProp, "El campo 'Nombres' no puede estar vacio.");
-            datosValidos = false;
-        }
-
-        // Validación de apellidos
-        String apellidos = this.vistaProp.jtf_apellidos.getText();
-        if (!apellidos.trim().isEmpty()) {
-            this.unPropietario.setApellidos(apellidos);
-        } else {
-            JOptionPane.showMessageDialog(this.vistaProp, "El campo 'Apellidos' no puede estar vacio.");
-            datosValidos = false;
-        }
-
-        // Validación de dirección
-        String direccion = this.vistaProp.jtf_direccion.getText();
-        if (!direccion.trim().isEmpty()) {
-            this.unPropietario.setDireccion(direccion);
-        } else {
-            JOptionPane.showMessageDialog(this.vistaProp, "El campo 'Dirección' no puede estar vacio.");
-            datosValidos = false;
-        }
-
-        // Agregar propietario solo si todo es válido
-        if (datosValidos) {
-            this.listaPropietarios.add(unPropietario);
-            JOptionPane.showMessageDialog(vistaProp, "Propietario creado correctamente.");
-        }
+        
+        this.vistaPropietario= new VistaPropietario();
+        this.vistaPropietario.setVisible(true);
+        
+        this.vistaPropietario.jbtn_aceptar.addActionListener(this);
+        this.vistaPropietario.jbtn_Atualizar.addActionListener(this);
+        this.vistaPropietario.jbtn_Eliminar.addActionListener(this);
+        this.vistaPropietario.jbtn_Consultar.addActionListener(this);
+        this.vistaPropietario.jbtn_Listar.addActionListener(this);
+       
     }
-
+  
     @Override
     public void actionPerformed(ActionEvent e) {
-
-        if (e.getSource() == this.vistaProp.jbtn_aceptar) {
-            agregarPropietario();
-            //Actualizar Propietarios
-            if (e.getSource()== this.vistaProp.jbtn_Consultar) {
-                consultarPropietarios();
+        //Boton agregar
+        if (e.getSource() == this.vistaPropietario.jbtn_aceptar) {
+            String textoDni = vistaPropietario.jtf_dni.getText();
+           
+            try {
+                if (textoDni.isEmpty() || !textoDni.matches("^[0-9]+$")) {
+                    JOptionPane.showMessageDialog(null, "El DNI solo debe tener formato de números y no estar vacío.");
+                    return;
+                }
+                
+                this.unPropietario.setDni(Integer.parseInt(this.vistaPropietario.jtf_dni.getText()));
+                this.unPropietario.setNombres(this.vistaPropietario.jtf_nombres.getText());
+                this.unPropietario.setApellidos(this.vistaPropietario.jtf_apellidos.getText());
+                this.unPropietario.setDireccion(this.vistaPropietario.jtf_direccion.getText());
+ 
+                if (!this.unPropietario.getNombres().isEmpty() 
+                        && !this.unPropietario.getApellidos().isEmpty() && !this.unPropietario.getDireccion().isEmpty()) { 
+                    
+                    if (this.unPropietarioDAO.ingresarPropietario(unPropietario)){
+                        JOptionPane.showMessageDialog(this.vistaPropietario, "Datos ingresados con éxito!!!");
+                        limpiarCampos();
+                    }
+                }else{
+                    JOptionPane.showMessageDialog(this.vistaPropietario,"Todos los campos son obligatorios\nY ninguno debe ir en blanco");
+                }
+            
+            }catch(NumberFormatException ex){
+                JOptionPane.showMessageDialog(vistaPropietario, "El DNI solo deve terner formato de numeros. "+ex);
+                
+            }catch(Exception exc){
+                JOptionPane.showMessageDialog(vistaPropietario, "El DNI, nombres, apellidos, direccion no deben estar vacíos "+exc); 
             }
         }
        
-        if (e.getSource()== this.vistaProp.jbtn_Atualizar) {
-            modificarPropietarioPorDni();
+        //Boton Modificar
+        if (e.getSource()== this.vistaPropietario.jbtn_Atualizar) {
+            try{
+                this.unPropietario.setDni(Integer.parseInt(this.vistaPropietario.jtf_dni.getText()));
+                this.unPropietario.setNombres(this.vistaPropietario.jtf_nombres.getText()); 
+                this.unPropietario.setApellidos(this.vistaPropietario.jtf_apellidos.getText()); 
+                this.unPropietario.setDireccion(this.vistaPropietario.jtf_direccion.getText());
+
+                if(this.unPropietario.getDni()!= 0 && !this.unPropietario.getNombres().isEmpty()
+                        && !this.unPropietario.getApellidos().isEmpty()
+                        && !this.unPropietario.getNombres().isEmpty() ){
+                    
+                    if(this.unPropietarioDAO.actualizarPropietario(unPropietario)){
+                        JOptionPane.showMessageDialog(this.vistaPropietario, "Datos actualizados con éxito!!!");
+                        limpiarCampos();
+                    }else{
+                        JOptionPane.showMessageDialog(this.vistaPropietario, "Datos no actualizados!!!");
+                    }
+                }else{
+                    JOptionPane.showMessageDialog(this.vistaPropietario,"Todos los campos son obligatorios\nY ninguno debe ir en blanco.");
+                }                
+            }catch(NumberFormatException ex){
+                JOptionPane.showMessageDialog(this.vistaPropietario,"El campo DNI es obligatorio\nY deben ser en formato de numeros.");
+            }
         }
         
-        if (e.getSource() == this.vistaProp.jbtn_Consultar) {
-            consultarPropietarios();
+        //Boton Consultar
+        if (e.getSource() == this.vistaPropietario.jbtn_Consultar) {
+            try{
+                this.unPropietario= this.unPropietarioDAO.consultarQuery(Integer.parseInt(this.vistaPropietario.jtf_dni.getText()));                
+                this.vistaPropietario.jtf_nombres.setText(this.unPropietario.getNombres());
+                this.vistaPropietario.jtf_apellidos.setText(this.unPropietario.getApellidos());
+                this.vistaPropietario.jtf_direccion.setText(this.unPropietario.getDireccion()+"");
+
+            }catch(NumberFormatException ex){
+                JOptionPane.showMessageDialog(this.vistaPropietario,"El campo DNI es obligatorio\nY deben ser en formato de numero");
+            }
         }
         
-        if (e.getSource() == this.vistaProp.jbtn_Eliminar) {
-            eliminarPropietarioPorDni();
-            limpiarCampos();
-           
+        //Boton Eliminar
+        if (e.getSource() == this.vistaPropietario.jbtn_Eliminar) {
+            try{
+                int cedula= Integer.parseInt(this.vistaPropietario.jtf_dni.getText());
+            
+                if(this.unPropietarioDAO.eliminarPropietario(cedula)){
+                    JOptionPane.showMessageDialog(this.vistaPropietario, "Datos Eliminados!!!");
+                    limpiarCampos();
+                }else{
+                    JOptionPane.showMessageDialog(this.vistaPropietario, "Datos No Eliminados!!!");
+                }
+                
+            }catch(Exception ex){
+                JOptionPane.showMessageDialog(this.vistaPropietario,"El campo DNI es obligatorio\nY deben ser en formato de numero.");
+            }
         }
         
-        if (e.getSource() == this.vistaProp.jbtn_Listar) {
-            listarPropietarios();
+        //Boton Listar
+        if (e.getSource() == this.vistaPropietario.jbtn_Listar) {
+           this.unPropietarioDAO.mostrarLista(this.vistaPropietario.jTable_propietarios);
         }
+    }
+    public void limpiarCampos(){
+        this.vistaPropietario.jtf_dni.setText("");
+        this.vistaPropietario.jtf_nombres.setText("");
+        this.vistaPropietario.jtf_apellidos.setText("");
+        this.vistaPropietario.jtf_direccion.setText("");
+        
     }
 
     

@@ -15,8 +15,6 @@ public class SecretariaTransitoYumboslavia {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
-        //ControlPropietarioGui ctrlPropGui = new ControlPropietarioGui();
         ControlMenuSTYGui ctrlVehiGui= new ControlMenuSTYGui();
     }
     
