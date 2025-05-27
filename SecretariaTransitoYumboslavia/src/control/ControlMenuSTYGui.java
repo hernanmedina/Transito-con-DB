@@ -35,7 +35,7 @@ public class ControlMenuSTYGui implements ActionListener {
         }
 
         if (e.getSource() == this.vistaMenSTY.jbtn_tarjetaPropiedad) {
-           // new ControlTarjetaPropiedadGui();
+            new ControlTarjetaPropiedadGui();
         }
 
     }

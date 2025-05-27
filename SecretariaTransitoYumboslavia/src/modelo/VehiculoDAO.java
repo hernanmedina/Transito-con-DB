@@ -1,6 +1,7 @@
 package modelo;
 
 import java.sql.*;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
@@ -153,8 +154,51 @@ public class VehiculoDAO {
         }
     }
     
-      
-      
+    //retorna lista de vehiculos
+    public ArrayList<Vehiculo> obtenerVehiculos() {
+        ArrayList<Vehiculo> lista = new ArrayList<>();
+        String query = "SELECT placa, marca, anhoFab FROM vehiculo";
+
+        try {
+            this.con = this.miConexion.obtenerConexion();
+            pst = con.prepareStatement(query);
+            rs = pst.executeQuery();
+
+            while (rs.next()) {
+                Vehiculo v = new Vehiculo();
+                v.setPlaca(rs.getString("placa"));
+                v.setMarca(rs.getString("marca"));
+                v.setAnhoFab(rs.getInt("anhoFab"));
+                lista.add(v);
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al obtener vehículos: " + ex);
+        }
+        return lista;
+    }
+
+    //obtener id por placa
+    public int obtenerIdVehiculoPorPlaca(String placa) {
+        int idVehiculo = -1;
+        String query = "SELECT id FROM vehiculo WHERE placa = ?";
+
+        try {
+            this.con = this.miConexion.obtenerConexion();
+            this.pst = this.con.prepareStatement(query);
+            this.pst.setString(1, placa);
+            this.rs = this.pst.executeQuery();
+
+            if (this.rs.next()) {
+                idVehiculo = this.rs.getInt("id");
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al obtener ID del vehículo: " + ex);
+        }
+
+        return idVehiculo;
+    }
+
     
    
 }

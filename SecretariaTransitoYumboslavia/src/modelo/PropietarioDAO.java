@@ -2,6 +2,7 @@ package modelo;
 
 import java.awt.Component;
 import java.sql.*;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import vista.VistaPropietario;
@@ -155,5 +156,53 @@ public class PropietarioDAO {
             JOptionPane.showMessageDialog(null, "Error al mostrar los datos: " + e);
         }
     }
+    
+    //lista de propietarios
+    public ArrayList<Propietario> obtenerPropietarios() {
+        ArrayList<Propietario> lista = new ArrayList<>();
+        String query = "SELECT * FROM propietario";
+
+        try {
+            this.con = this.miConexion.obtenerConexion();
+            pst = con.prepareStatement(query);
+            rs = pst.executeQuery();
+
+            while (rs.next()) {
+                Propietario p = new Propietario();
+                p.setDni(rs.getInt("dni"));
+                p.setNombres(rs.getString("nombres"));
+                p.setApellidos(rs.getString("apellidos"));
+                p.setDireccion(rs.getString("direccion"));
+                lista.add(p);
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al obtener propietarios: " + ex);
+        }
+        return lista;
+    }
+
+    //obtener propietario por dni
+    public int obtenerIdPropietarioPorDni(int dni) {
+        int id = -1;
+        String query = "SELECT id FROM propietario WHERE dni = ?";
+
+        try {
+            this.con = this.miConexion.obtenerConexion();
+            this.pst = this.con.prepareStatement(query);
+            this.pst.setInt(1, dni);
+
+            this.rs = this.pst.executeQuery();
+
+            if (this.rs.next()) {
+                id = this.rs.getInt("id");
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al buscar propietario: " + ex);
+        }
+
+        return id;
+    }
+
 
 }

@@ -44,5 +44,5 @@ public class Vehiculo {
     public String toString(){
         return "Placa: "+this.placa+" Marca: "+this.marca+" AñoFab: "+this.anhoFab;
     }
-    
+
 }

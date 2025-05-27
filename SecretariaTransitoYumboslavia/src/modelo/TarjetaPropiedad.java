@@ -15,7 +15,12 @@ public class TarjetaPropiedad {
     private int codigo;
     private String fechaExp;
     
-    public TarjetaPropiedad(){}
+    public TarjetaPropiedad(Propietario prop, Vehiculo veh, int codigo1, String fecha){
+        this.propietario = prop;
+        this.vehiculo = veh;
+        this.codigo = codigo1;
+        this.fechaExp = fecha;
+    }
 
     public Propietario getPropietario() {
         return propietario;
